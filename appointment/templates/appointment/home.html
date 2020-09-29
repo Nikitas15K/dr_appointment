@@ -1,0 +1,54 @@
+{% extends "appointment/layout.html" %}
+{% block content %}
+
+    <h5>Date: {{  date.date|date:"l, d M Y"  }}</h5>
+    {% if appointments.count == 0 %}
+        <h3>No appointments for today</h3>
+    {% else %}
+        <div class="dosage">
+            <h5>Today's Radioactive Drug Dosage: {{ current_dosage }} (MBq)</h5>
+            {% if fixed_difference < 0 %}
+                <p class="effective"> <i class="fas fa-chart-line"></i> Comparison to Static Model({{ static_dosage }} MBq): {{ fixed_difference }} MBq</p>
+            {% else %}
+                <p class="ineffective"><i class="fad fa-chart-line-down"></i>Comparison to Static Model({{ static_dosage }} MBq): {{ fixed_difference }} MBq</p>
+            {% endif %}
+
+             {% if median_difference < 0 %}
+                <p class="effective"><i class="fas fa-chart-line"></i> Comparison to Smart Model({{ avg_dosage }} MBq) {{ median_difference }} MBq</p>
+            {% else %}
+                <p class="ineffective"><i class="fas fa-chart-line"></i> Comparison to Smart Model({{ avg_dosage }} MBq): {{ median_difference }} MBq</p>
+            {% endif %}
+        </div>
+
+        <h5>Today's schedule: </h5>
+        {% for appointment in appointments %}
+            {% if appointment.schedule.timeslot.start_time < now %}
+                <article class="media content-section" style="opacity: 0.5" }}>
+                  <div class="media-body">
+                    <div class="article-metadata">
+                      {{ forloop.counter }}) <a class="mr-2" href="#">{{ appointment.person.first_name }} {{ appointment.person.last_name }}</a>
+                      <small class="text-muted">AMKA: {{ appointment.person.amka }} /  Tel: {{ appointment.person.phone }} / BMI: {{ appointment.person.bmi }}</small>
+                    </div>
+                    <h5 class="article-content text">
+                        <strong><i class="far fa-clock"></i></strong> {{ appointment.schedule.timeslot.start_time }}:00AM - {{ appointment.schedule.timeslot.end_time }}:00PM
+                    </h5>
+                  </div>
+                </article>
+            {% else %}
+                <article class="media content-section">
+                  <div class="media-body">
+                    <div class="article-metadata">
+                      {{ forloop.counter }}) <a class="mr-2" href="#">{{ appointment.person.first_name }} {{ appointment.person.last_name }}</a>
+                      <small class="text-muted">AMKA: {{ appointment.person.amka }} /  Tel: {{ appointment.person.phone }} / BMI: {{ appointment.person.bmi }}</small>
+                    </div>
+                    <h5 class="article-content text">
+                        <strong><i class="far fa-clock"></i></strong> {{ appointment.schedule.timeslot.start_time }}:00AM - {{ appointment.schedule.timeslot.end_time }}:00PM
+                    </h5>
+                  </div>
+                </article>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endblock content %}
+
+

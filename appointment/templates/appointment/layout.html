@@ -1,0 +1,119 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.0/css/all.css" integrity="sha256-zpHiFE6if4IpLvLIfF2eHQuZlN9jg2EwKThlrKGPxVA=" crossorigin="anonymous" />    <link rel="stylesheet" type="text/css" href="{% static 'appointment/main.css' %}">
+
+
+    <title>BioScan Clinic</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="/">BioScan Clinic</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <!-- Navbar Right Side -->
+            <div class="navbar-nav">
+                {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="http://127.0.0.1:8000/admin/"><i class="fas fa-tachometer-alt"></i> Admin Panel</a>
+                    <a class="nav-item nav-link" href="http://127.0.0.1:8000/admin/logout/">Logout <i class="fas fa-sign-out-alt"></i> </a>
+                {% else %}
+                    <a class="nav-item nav-link" href="http://127.0.0.1:8000/admin/login/">Login <i class="fas fa-sign-out-alt"></i> </a>
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {% block content %}{% endblock %}
+        </div>
+        <div class="col-md-4">
+          <div class="content-section">
+                {% if user.is_authenticated %}
+                    <h5 class="p-2">Welcome, {{ user.username }}</h5>
+                {% else %}
+                    <h5>Main Menu</h5>
+                {% endif %}
+              <ul class="list-group">
+                <li class="list-group-item list-group-item-light">
+                    <a class="nav-item nav-link" href="{% url 'appointment-home' %}">
+                        <i class="far fa-clock"></i> {{ today | date:"l, d/m/Y"}}
+                    </a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'appointment-tomorrow' %}" class="nav-item nav-link">
+                        <i class="far fa-calendar-alt"></i> {{ tomorrow | date:"l, d/m/Y"}}
+                    </a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'appointment-second' %}" class="nav-item nav-link">
+                        <i class="far fa-calendar-alt"></i> {{ second_day.date | date:"l, d/m/Y" }}
+                    </a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    <a href="{% url 'appointment-third' %}" class="nav-item nav-link">
+                        <i class="far fa-calendar-alt"></i> {{ third_day.date | date:"l, d/m/Y" }}
+                    </a>
+                </li>
+                <li class="list-group-item list-group-item-light">
+                    <a class="nav-item nav-link" href="{% url 'appointment-reporting' %}">
+                        <i class="far fa-file-alt"></i> Reporting </a>
+                </li>
+              </ul>
+          </div>
+
+            <div class="row">
+                 <div class="col-12" >
+                     <ul style="border: 1px solid darkgrey; padding: 20px; margin-bottom: 20px; list-style: none">
+                         <div>
+                             <h5>Next 3 days appointments:</h5>
+                             <li>All: {{ all_schedules }}</li>
+                             <li>Available: {{ all_available }}</li>
+                             <li>Scheduled Appointments: {{ all_appointments }}</li>
+                             <li>Patients in Waiting List: {{ waiting_list_count }}</li>
+                         </div>
+                         </ul>
+                    <form action="{% url 'appointment-planning' %}" method="post">
+                        {% csrf_token %}
+                        {% if all_available > 0 and waiting_list_count > 0 %}
+                            <button class="btn btn-success btn-lg btn-block" type="submit">Auto Scheduling</button>
+                            <a href="{% url 'manual' %}" class="btn btn-primary btn-lg btn-block" type="submit">Schedule Appointment</a>
+                        {% else %}
+                            <button class="btn btn-success btn-lg btn-block disabled" type="submit">Auto Scheduling</button>
+                            <button class="btn btn-primary btn-lg btn-block disabled" type="submit">Schedule Appointment</button>
+                        {% endif %}
+                    </form>
+                  </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

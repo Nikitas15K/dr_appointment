@@ -1,0 +1,61 @@
+{% extends "appointment/layout.html" %}
+{% block content %}
+{% load static %}
+
+    <h5>Reporting for year {{ previous_year }}</h5>
+    <p>Number of exams: {{ appointment_number }}</p>
+    <p>Average bmi: {{ avg_bmi }}</p>
+
+    <h5>Age distribution</h5>
+    <img src="{% static "appointment/age.png" %}" alt="age">
+    <br>
+
+    <h5>Bmi distribution</h5>
+    <img src="{% static "appointment/bmi.png" %}" alt="bmi">
+    <br>
+
+    <h5>Male Bmi distribution</h5>
+    <img src="{% static "appointment/male_bmi.png" %}" alt="bmi">
+    <br>
+
+    <h5>Female Bmi distribution</h5>
+    <img src="{% static "appointment/female_bmi.png" %}" alt="bmi">
+    <br>
+
+    <h5>Smoker Bmi distribution</h5>
+    <img src="{% static "appointment/smoker.png" %}" alt="smoker">
+    <br>
+
+    <h5>No smoker Bmi distribution</h5>
+    <img src="{% static "appointment/nosmoker.png" %}" alt="no smoker">
+
+    <h5>Dosage per day</h5>
+    <img src="{% static "appointment/dosage_previous_year.png" %}" alt="dosage">
+    <br>
+    <br>
+    <br>
+    <br>
+    <h5>Reporting for year {{ this_year }}</h5>
+    <br>
+    <p>Number of exams : {{ appointment_count_current_year }}</p>
+    <p>Average dosage per day : {{ average_dosage_per_day }}</p>
+
+    <br>
+
+    <h5>Dosage per day</h5>
+    <img src="{% static "appointment/dosage_current_year.png" %}" alt="dosage">
+    <br>
+
+<!--    <h5>Bmi distribution</h5>-->
+<!--    <img src="{% static "appointment/sex.png" %}" alt="bmi">-->
+<!--    <br>-->
+
+<!--    <br>-->
+
+<!--    <br>-->
+
+<!--    <h5>Dosage per day</h5>-->
+<!--    <img src="{% static "appointment/dosage.png" %}" alt="sex">-->
+<!--    <br>-->
+
+{% endblock content %}

@@ -1,0 +1,67 @@
+{% extends "appointment/layout.html" %}
+{% block content %}
+
+    <h2>Manual Schedule</h2>
+
+    <form action="{% url 'schedule' %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <select name="person" required>
+                    <option value="" disabled selected>Select your option</option>
+                    {% for person in waiting_list %}
+                        <option value="{{person.person.amka}}">
+                           {{ person.person.amka }} {{ person.person.first_name }} {{ person.person.last_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-4 text-center">
+            <h4>{{ tomorrow | date:"l, d/m/Y"}}</h4>
+            {% for schedule in tomorrow_availables %}
+                <input type="radio" id="schedule-{{ schedule.id }}" name="schedule" value="{{ schedule.id }}" required>
+                <label for="schedule-{{ schedule.id }}" class="btn">
+                    {{ schedule.timeslot.start_time }}:00 - {{ schedule.timeslot.end_time }}:00
+                </label><br>
+            {% endfor %}
+            {% if tomorrow_availables.count <= 0 %}
+                <p>No available schedules</p>
+            {% endif %}
+        </div>
+         <div class="col-4 text-center">
+                <h4>{{ second_day | date:"l, d/m/Y"}}</h4>
+                 {% for schedule in second_day_availables %}
+                    <input type="radio" id="schedule-{{ schedule.id }}" name="schedule" value="{{ schedule.id }}">
+                     <label for="schedule-{{ schedule.id }}" class="btn">
+                    {{ schedule.timeslot.start_time }}:00 - {{ schedule.timeslot.end_time }}:00
+                </label><br>
+                 {% endfor %}
+              {% if second_day_availables.count <= 0 %}
+                    <p>No available schedules</p>
+                {% endif %}
+        </div>
+         <div class="col-4 text-center">
+             <h4>{{ third_day | date:"l, d/m/Y"}}</h4>
+             {% for schedule in third_day_availables %}
+                <input type="radio" id="schedule-{{ schedule.id }}" name="schedule" value="{{ schedule.id }}">
+                 <label for="schedule-{{ schedule.id }}" class="btn">
+                {{ schedule.timeslot.start_time }}:00 - {{ schedule.timeslot.end_time }}:00
+             </label><br>
+             {% endfor %}
+            {% if third_day_availables.count <= 0 %}
+                <p>No available schedules</p>
+            {% endif %}
+        </div>
+    </div>
+
+        <div class="row" style="margin-top: 250px">
+        <div class="offset-md-8 col-4">
+            <button type="submit" class="btn btn-success">Schedule Appointment</button>
+        </div>
+    </div>
+    </form>
+{% endblock content %}
+
+
