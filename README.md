@@ -35,15 +35,15 @@ https://github.com/Nikitas15/dr_appointment.git
 $ sudo pip install -r requirements.txt
 
 <span class="pl-c"><span class="pl-c">#</span>Connect to the database In folder groupsw go to settings.py and add:</span><br>
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+DATABASES = {<br>
+    'default': {<br>
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',<br>
+        'NAME': 'postgres',<br>
+        'USER': 'postgres',<br>
+        'PASSWORD': 'root',<br>
+        'HOST': 'localhost',<br>
+        'PORT': '5432',<br>
+    }<br>
 }
 
 <span class="pl-c"><span class="pl-c">#</span>Add data from the dataset insurance.csv and the library [faker](https://faker.readthedocs.io/en/master) to create last year data. Run filler in command line:</span><br>
