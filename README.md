@@ -46,7 +46,7 @@ DATABASES = {
     }
 }
 
-<span class="pl-c"><span class="pl-c">#</span>Add data from the dataset insurance.csv and the library [faker](https://faker.readthedocs.io/en/master) to create last year data. Run filler in command line:</span><br>//  <br>
+<span class="pl-c"><span class="pl-c">#</span>Add data from the dataset insurance.csv and the library [faker](https://faker.readthedocs.io/en/master) to create last year data. Run filler in command line:</span><br>
 python run filler.py
 
 <span class="pl-c"><span class="pl-c">#</span>Start django server:</span><br>
